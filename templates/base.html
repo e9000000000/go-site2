@@ -12,10 +12,12 @@
 </head>
 <body hx-ext="response-targets">
     <header>
-        <button hx-get="/posts" hx-target=".content">Главная</button>
+        <button hx-get="/posts" hx-target=".content">Лента новостей</button>
         <button hx-get="/admin" hx-target=".content">Админка</button>
     </header>
-    <section class="content"></section>
+    <section class="content">
+        <p>Добро пожаловать</p>
+    </section>
 </body>
 </html>
 {{end}}

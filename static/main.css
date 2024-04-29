@@ -1,4 +1,41 @@
+* {
+    font-family: monospace;
+    font-size: 14pt;
+    margin: 7px;
+}
+
 body {
-    color: white;
+    color: #aaa;
     background-color: black;
+}
+
+button {
+    padding: 7px 16px;
+    background-color: black;
+    border: 1px solid #aaa;
+    border-radius: 15%;
+    color: #aaa;
+}
+
+input {
+    padding: 7px 16px;
+    background-color: black;
+    border: 1px solid #aaa;
+    border-radius: 15%;
+    color: #aaa;
+    outline: none;
+}
+
+button:hover, input:focus, input:hover {
+    color: #fff;
+    border-color: #fff;
+}
+
+.content {
+    margin: 1rem;
+    padding: 1rem;
+    border-radius: 1rem;
+    margin-top: 5rem;
+    max-width: min(100vh 100vw);
+    background-color: #121511;
 }

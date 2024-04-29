@@ -5,8 +5,9 @@
 
 {{block "admin-login" .}}
 <form hx-post="/admin" hx-target=".content", hx-target-error=".error">
-    <input type="text" name="name", paceholder="Имя пользователя">
-    <input type="password" name="password", paceholder="Пароль">
+    Имя: <input type="text" name="name">
+    <br>
+    Пароль: <input type="password" name="password">
     <p class="error"></p>
     <input type="submit" value="Войти">
 </form>
