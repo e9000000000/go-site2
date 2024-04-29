@@ -9,28 +9,22 @@ import (
 	"gorm.io/gorm"
 )
 
+var db *gorm.DB
+
 type Post struct {
-	gorm.Model
+	ID    uint `gorm:"primarykey"`
 	Title string
 	Text  string
 }
 
-type User struct {
-	gorm.Model
-	Name         string
-	PasswordHash string
-	IsAdmin      bool
-}
-
-var db *gorm.DB
-
-func index(w http.ResponseWriter, req *http.Request) {
+func IndexHandler(w http.ResponseWriter, req *http.Request) {
 	products := make([]Post, 20)
 	db.Order("created_at DESC").Limit(20).Find(&products)
 
 	t, err := template.ParseFiles("templates/index.html")
 	if err != nil {
 		log.Println(err)
+		return
 	}
 	t.Execute(w, map[string][]Post{
 		"Posts": products,
@@ -44,9 +38,14 @@ func main() {
 		panic(err)
 	}
 
-	db.AutoMigrate(&Post{})
+	CreateAdmin("admin", "123")
 
-	http.HandleFunc("/", index)
+	db.AutoMigrate(&Post{})
+	db.AutoMigrate(&User{})
+	db.AutoMigrate(&Identifier{})
+
+	http.HandleFunc("/", IndexHandler)
+	http.HandleFunc("/admin", AdminHandler)
 
 	http.ListenAndServe("127.0.0.1:8000", nil)
 }

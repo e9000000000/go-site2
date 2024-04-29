@@ -3,6 +3,7 @@ module goblin
 go 1.22.2
 
 require (
+	github.com/google/uuid v1.6.0
 	gorm.io/driver/sqlite v1.5.5
 	gorm.io/gorm v1.25.10
 )
