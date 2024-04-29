@@ -1,14 +1,29 @@
 {{block "admin" .}}
-<button hx-delete="/admin" hx-target=".content">выйти</button>
-<p>Добро пожаловать в админку, вас привествуте <b>golang</b> и <b>htmx</b></p>
+<h1>Добро пожаловать в админку</h1>
+<a hx-delete="/admin" hx-target=".content">выйти</a>
+<br>
+<br>
+<a hx-get="/admin-posts" hx-target=".content">Добавить новость</a>
 {{end}}
 
 {{block "admin-login" .}}
+<h1>Войдите</h1>
 <form hx-post="/admin" hx-target=".content", hx-target-error=".error">
     Имя: <input type="text" name="name">
     <br>
     Пароль: <input type="password" name="password">
     <p class="error"></p>
-    <input type="submit" value="Войти">
+    <button>Войти</button>
+</form>
+{{end}}
+
+{{block "admin-posts" .}}
+<h1>Ещё одна новость</h1>
+<form hx-post="/admin-posts" hx-target=".content" hx-target-error=".error">
+    Название: <input type="text" name="title">
+    <br>
+    Текст: <textarea name="text"></textarea>
+    <p class="error"></p>
+    <button>Создать</button>
 </form>
 {{end}}

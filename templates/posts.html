@@ -1,7 +1,9 @@
 {{block "posts" .}}
+<h1>Новости</h1>
 {{range $p := .Data}}
     <div class="post">
-        <p>{{$p.Name}} - <b>{{$p.Price}}</b></p>
+        <h2>{{$p.Title}}</h2>
+        <p>{{$p.Text}}</p>
     </div>
 {{end}}
 {{end}}

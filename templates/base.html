@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title></title>
+    <title>Великий сайт</title>
     <link rel="stylesheet" href="/static/reset.css">
     <link rel="stylesheet" href="/static/main.css">
     <script src="https://unpkg.com/htmx.org@1.9.12"></script>
@@ -12,8 +12,8 @@
 </head>
 <body hx-ext="response-targets">
     <header>
-        <button hx-get="/posts" hx-target=".content">Лента новостей</button>
-        <button hx-get="/admin" hx-target=".content">Админка</button>
+        <a hx-get="/posts" hx-target=".content">Лента новостей</a>
+        <a hx-get="/admin" hx-target=".content">Админка</a>
     </header>
     <section class="content">
         <p>Добро пожаловать</p>

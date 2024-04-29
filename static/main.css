@@ -22,18 +22,41 @@ button {
     color: #aaa;
 }
 
-input {
+input, textarea {
     padding: 7px 16px;
-    background-color: black;
-    border: 1px solid #aaa;
-    border-radius: 15%;
+    background-color: #00000080;
+    border: none;
     color: #aaa;
     outline: none;
 }
 
 button:hover, input:focus, input:hover {
     color: #fff;
-    border-color: #fff;
+    background-color: #000;
+}
+
+h1 {
+    font-size: 24pt;
+    margin-bottom: 2rem;
+}
+
+h2 {
+    font-size: 20pt;
+    margin-bottom: 1rem;
+}
+
+a {
+    cursor: pointer;
+    text-decoration: underline;
+}
+
+a:hover {
+    color: #fff;
+}
+
+header a {
+    font-size: 20pt;
+    margin: 0.5rem;
 }
 
 .content {
@@ -43,4 +66,14 @@ button:hover, input:focus, input:hover {
     margin-top: 5rem;
     max-width: min(100vh 100vw);
     background-color: #121511;
+}
+
+.error {
+    color: #f00;
+}
+
+.post {
+    border-left: 2px solid #555;
+    margin-top: 2rem;
+    padding-left: 0.5rem;
 }

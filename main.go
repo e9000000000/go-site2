@@ -35,6 +35,7 @@ func main() {
 	serv.Handle("/", BaseHandler)
 	serv.Handle("/posts", PostsHandler)
 	serv.Handle("/admin", AdminHandler)
+	serv.Handle("/admin-posts", AdminPostsHandler)
 
 	serv.Run("127.0.0.1:8000")
 }
