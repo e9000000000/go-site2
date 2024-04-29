@@ -4,8 +4,6 @@ import (
 	"crypto/sha256"
 	"encoding/base64"
 	"fmt"
-	"html/template"
-	"log"
 	"net/http"
 
 	"github.com/google/uuid"
@@ -24,38 +22,42 @@ type Identifier struct {
 	User   *User `gorm:"foreignKey:UserID;references:ID"`
 }
 
-func AdminHandler(w http.ResponseWriter, req *http.Request) {
+func IdentMiddleware(w http.ResponseWriter, req *http.Request, c *Context) {
 	ident := getOrCreateIdentifier(w, req)
+	c.Identifier = ident
+}
 
+func AdminHandler(w http.ResponseWriter, req *http.Request, c *Context) (int, string) {
 	if req.Method == "POST" {
 		err := req.ParseForm()
 		if err != nil {
-			http.Error(w, "can't parse form", http.StatusBadRequest)
-			return
+			c.Data = "Невозможнос спарсить форму"
+			return 400, "error"
 		}
 
 		form := req.PostForm
 		if len(form["name"]) != 1 || len(form["password"]) != 1 {
-			http.Error(w, "fields are missing", http.StatusBadRequest)
-			return
+			c.Data = "В форме не хватает полей"
+			return 400, "error"
 		}
+
 		name := form["name"][0]
 		password := form["password"][0]
-		err = login(ident, name, password)
+		err = login(c.Identifier, name, password)
 		if err != nil {
-			http.Error(w, "Не верное имя или пароль", http.StatusBadRequest)
-			return
+			c.Data = "Не верное имя или пароль"
+			return 403, "error"
 		}
 	}
 
 	if req.Method == "DELETE" {
-		logout(ident)
+		logout(c.Identifier)
 	}
 
-	if ident == nil || ident.User == nil {
-		renderTemplate(w, "admin-login.html", nil)
+	if c.Identifier.User == nil {
+		return 200, "admin-login"
 	} else {
-		renderTemplate(w, "admin.html", nil)
+		return 200, "admin"
 	}
 }
 
@@ -69,21 +71,6 @@ func CreateAdmin(name, password string) (*User, error) {
 		return nil, fmt.Errorf("user with name %s already exists", name)
 	}
 	return &user, nil
-}
-
-func renderTemplate(w http.ResponseWriter, templateName string, data any) {
-	t, err := template.ParseFiles("templates/base.html", "templates/"+templateName)
-	if err != nil {
-		log.Println(err)
-		http.Error(w, "Internal Server Error", http.StatusInternalServerError)
-	}
-
-	err = t.Execute(w, data)
-
-	if err != nil {
-		log.Println(err)
-		http.Error(w, "Internal Server Error", http.StatusInternalServerError)
-	}
 }
 
 func hashPassword(password string) string {

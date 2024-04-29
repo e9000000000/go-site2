@@ -1,9 +1,0 @@
-{{define "title"}}Войдите{{end}}
-{{define "content"}}
-<form hx-post="/admin" hx-target="body", hx-target-error="#error">
-    <input type="text" name="name", paceholder="Имя пользователя">
-    <input type="password" name="password", paceholder="Пароль">
-    <p id="error" class="error" style="color: red"></p>
-    <input type="submit" value="Войти">
-</form>
-{{end}}

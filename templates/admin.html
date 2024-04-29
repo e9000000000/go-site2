@@ -1,5 +1,13 @@
-{{define "title"}}Админ панель{{end}}
-{{define "content"}}
-<button hx-delete="/admin" hx-target="body">выйти</button>
+{{block "admin" .}}
+<button hx-delete="/admin" hx-target=".content">выйти</button>
 <p>Добро пожаловать в админку, вас привествуте <b>golang</b> и <b>htmx</b></p>
+{{end}}
+
+{{block "admin-login" .}}
+<form hx-post="/admin" hx-target=".content", hx-target-error=".error">
+    <input type="text" name="name", paceholder="Имя пользователя">
+    <input type="password" name="password", paceholder="Пароль">
+    <p class="error"></p>
+    <input type="submit" value="Войти">
+</form>
 {{end}}

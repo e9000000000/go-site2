@@ -1,14 +1,25 @@
+{{block "base" .}}
 <!DOCTYPE html>
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{template "title" .}}</title>
+    <title></title>
+    <link rel="stylesheet" href="/static/main.css">
+    <link rel="stylesheet" href="/static/reset.css">
     <script src="https://unpkg.com/htmx.org@1.9.12"></script>
     <script src="https://unpkg.com/htmx.org/dist/ext/response-targets.js"></script>
 </head>
 <body hx-ext="response-targets">
-    <h1>{{template "title" .}}</h1>
-    {{template "content" .}}
+    <header>
+        <button hx-get="/posts" hx-target=".content">Главная</button>
+        <button hx-get="/admin" hx-target=".content">Админка</button>
+    </header>
+    <section class="content"></section>
 </body>
 </html>
+{{end}}
+
+{{block "error" .}}
+{{.Data}}
+{{end}}

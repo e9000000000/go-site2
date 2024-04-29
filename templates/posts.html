@@ -1,0 +1,7 @@
+{{block "posts" .}}
+{{range $p := .Data}}
+    <div class="post">
+        <p>{{$p.Name}} - <b>{{$p.Price}}</b></p>
+    </div>
+{{end}}
+{{end}}

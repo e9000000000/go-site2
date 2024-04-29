@@ -1,8 +1,6 @@
 package main
 
 import (
-	"html/template"
-	"log"
 	"net/http"
 
 	"gorm.io/driver/sqlite"
@@ -11,24 +9,8 @@ import (
 
 var db *gorm.DB
 
-type Post struct {
-	ID    uint `gorm:"primarykey"`
-	Title string
-	Text  string
-}
-
-func IndexHandler(w http.ResponseWriter, req *http.Request) {
-	products := make([]Post, 20)
-	db.Order("created_at DESC").Limit(20).Find(&products)
-
-	t, err := template.ParseFiles("templates/index.html")
-	if err != nil {
-		log.Println(err)
-		return
-	}
-	t.Execute(w, map[string][]Post{
-		"Posts": products,
-	})
+func BaseHandler(w http.ResponseWriter, req *http.Request, c *Context) (int, string) {
+	return 200, "base"
 }
 
 func main() {
@@ -44,8 +26,15 @@ func main() {
 	db.AutoMigrate(&User{})
 	db.AutoMigrate(&Identifier{})
 
-	http.HandleFunc("/", IndexHandler)
-	http.HandleFunc("/admin", AdminHandler)
+	serv := NewServer()
 
-	http.ListenAndServe("127.0.0.1:8000", nil)
+	serv.HandleStatic("/staitc/")
+
+	serv.AddMiddleware(IdentMiddleware)
+
+	serv.Handle("/", BaseHandler)
+	serv.Handle("/posts", PostsHandler)
+	serv.Handle("/admin", AdminHandler)
+
+	serv.Run("127.0.0.1:8000")
 }
