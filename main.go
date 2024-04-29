@@ -28,7 +28,7 @@ func main() {
 
 	serv := NewServer()
 
-	serv.HandleStatic("/staitc/")
+	serv.HandleStatic("/static/")
 
 	serv.AddMiddleware(IdentMiddleware)
 
