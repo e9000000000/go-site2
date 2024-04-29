@@ -132,5 +132,6 @@ func login(ident *Identifier, name, password string) error {
 
 func logout(ident *Identifier) error {
 	ident.User = nil
+	ident.UserID = 0
 	return db.Save(&ident).Error
 }
