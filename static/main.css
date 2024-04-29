@@ -9,6 +9,11 @@ body {
     background-color: black;
 }
 
+header {
+    margin: 1rem auto;
+    width: fit-content;
+}
+
 button {
     padding: 7px 16px;
     background-color: black;
