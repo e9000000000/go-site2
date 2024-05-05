@@ -1,6 +1,16 @@
 # site
+built with `go` and `htmx`
 
+# development
+## run server
+```
+go run .
+```
 
-# used in development
+## tests test
+```
+go test .
+```
+
 ## gorm
 - [docs](https://gorm.io/docs/query.html)
