@@ -113,7 +113,7 @@ func getOrCreateIdentifier(w http.ResponseWriter, req *http.Request) *Identifier
 
 func login(ident *Identifier, name, password string) error {
 	passwordHash := hashPassword(password)
-	var user User // TODO should be initialized?!
+	var user User
 	err := db.
 		Where("name = ?", name).
 		Where("password_hash = ?", passwordHash).

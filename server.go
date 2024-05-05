@@ -8,6 +8,7 @@ import (
 
 type Middleware func(http.ResponseWriter, *http.Request, *Context)
 type PathHandler func(http.ResponseWriter, *http.Request, *Context) (int, string)
+type actualHandler func(w http.ResponseWriter, req *http.Request)
 
 type Context struct {
 	Identifier *Identifier
@@ -15,6 +16,7 @@ type Context struct {
 }
 
 type HTTPServer struct {
+	Handlers    map[string]actualHandler
 	templates   *template.Template
 	middlewares []Middleware
 }
@@ -22,6 +24,7 @@ type HTTPServer struct {
 func NewServer() *HTTPServer {
 	return &HTTPServer{
 		templates: template.Must(template.ParseGlob("templates/*.html")),
+		Handlers:  make(map[string]actualHandler),
 	}
 }
 
@@ -30,14 +33,24 @@ func (serv *HTTPServer) AddMiddleware(m Middleware) {
 }
 
 func (serv *HTTPServer) Handle(path string, handler PathHandler) {
-	http.HandleFunc(path, func(w http.ResponseWriter, req *http.Request) {
+	actualHandler := func(w http.ResponseWriter, req *http.Request) {
 		context := &Context{}
 		for _, m := range serv.middlewares {
 			m(w, req, context)
 		}
 		status, templateName := handler(w, req, context)
 		serv.render(w, status, templateName, context)
-	})
+	}
+
+	serv.Handlers[path] = actualHandler
+	http.HandleFunc(path, actualHandler)
+}
+
+func (serv *HTTPServer) HandleDefault(path, templateName string) {
+	handler := func(w http.ResponseWriter, req *http.Request, c *Context) (int, string) {
+		return 200, "base"
+	}
+	serv.Handle(path, handler)
 }
 
 func (serv *HTTPServer) HandleStatic(path string) {

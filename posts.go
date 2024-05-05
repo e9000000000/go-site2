@@ -12,14 +12,19 @@ type Post struct {
 }
 
 func PostsHandler(w http.ResponseWriter, req *http.Request, c *Context) (int, string) {
-	posts := make([]Post, 20)
-	db.Order("created_at DESC").Limit(20).Find(&posts)
+	// TODO posts pagination
+	posts := make([]Post, 0)
+	db.Order("id DESC").Find(&posts)
 
 	c.Data = posts
 	return 200, "posts"
 }
 
 func AdminPostsHandler(w http.ResponseWriter, req *http.Request, c *Context) (int, string) {
+	// TODO edit posts
+	// TODO delete posts
+	// TODO search for posts
+	// TODO posts html editor
 	if c.Identifier.User == nil {
 		c.Data = "Только для админов"
 		return 403, "error"

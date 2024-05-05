@@ -1,4 +1,4 @@
-module goblin
+module go-site
 
 go 1.22.2
 

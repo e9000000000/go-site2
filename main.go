@@ -1,41 +1,43 @@
 package main
 
 import (
-	"net/http"
-
 	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"
 )
 
 var db *gorm.DB
 
-func BaseHandler(w http.ResponseWriter, req *http.Request, c *Context) (int, string) {
-	return 200, "base"
-}
-
-func main() {
+func initDB(dbFile, adminName, adminPassword string) {
 	var err error
-	db, err = gorm.Open(sqlite.Open("db.sqlite3"), &gorm.Config{})
+	db, err = gorm.Open(sqlite.Open(dbFile), &gorm.Config{})
 	if err != nil {
 		panic(err)
 	}
-
-	CreateAdmin("admin", "123")
 
 	db.AutoMigrate(&Post{})
 	db.AutoMigrate(&User{})
 	db.AutoMigrate(&Identifier{})
 
+	CreateAdmin(adminName, adminPassword)
+}
+
+func initServer() *HTTPServer {
 	serv := NewServer()
 
 	serv.HandleStatic("/static/")
 
 	serv.AddMiddleware(IdentMiddleware)
 
-	serv.Handle("/", BaseHandler)
+	serv.HandleDefault("/", "base")
 	serv.Handle("/posts", PostsHandler)
 	serv.Handle("/admin", AdminHandler)
 	serv.Handle("/admin-posts", AdminPostsHandler)
 
+	return serv
+}
+
+func main() {
+	initDB("db.sqlite3", "admin", "123")
+	serv := initServer()
 	serv.Run("127.0.0.1:8000")
 }
