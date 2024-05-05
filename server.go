@@ -45,6 +45,7 @@ func (serv *HTTPServer) HandleStatic(path string) {
 }
 
 func (serv *HTTPServer) Run(addr string) {
+	log.Printf("run server on http://%s\n", addr)
 	http.ListenAndServe(addr, nil)
 }
 
